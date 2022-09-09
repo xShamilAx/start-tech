@@ -77,7 +77,7 @@
                                                     <li
                                                         class="drag-item list-group-item list-group-item-success img-wrap">
                                                         <a href="{{$product->product_image_url}}" target="_blank">
-                                                            <img width="300" src="{{url($product->product_image_url)}}">
+                                                            <img width="300" src="{{$product->product_image_url}}">
                                                         </a>
                                                         @can('REMOVE_UPLOADED_PRODUCT_IMAGE')
                                                                 <button
@@ -111,9 +111,9 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label col-xs-6"
-                                               for="assign_user">Assign User</label>
+                                               for="assign_user_id">Assign User</label>
                                         <div class="col-xs-8">
-                                            {{ Form::select('assign_user', App\Models\UserModel::pluck('first_name', 'id'),isset($product->assign_user) ? $product->assign_user : '',array('class'=> 'form-control select2 validate[required]' ,'id' => 'assign_user', 'placeholder'=> "Not Assign user",)) }}
+                                            {{ Form::select('assign_user_id', App\Models\UserModel::pluck('username', 'id'),isset($product->assign_user_id) ? $product->assign_user_id : '',array('class'=> 'form-control select2 validate[required]' ,'id' => 'assign_user_id', 'placeholder'=> "Not Assign user",)) }}
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                     onComplete: function (id, name, responseJSON) {
                         if (responseJSON.success) {
                             $('#uploader').hide('slow');
-                            $('#product_ids').val(responseJSON.media_id);
+                            $('#product_image_url').val(BASE + 'uploads/' + responseJSON.folder_name + '/' + responseJSON.picture_name);
                             $("#product_view").append('<li id="' + responseJSON.media_id + '" class="drag-item list-group-item list-group-item-success img-wrap"> ' +
                                 '<a href="' + BASE + 'uploads/' + responseJSON.folder_name + '/' + responseJSON.picture_name + '" target="_blank">' +
                                 '<img width="300" src="' + BASE + 'uploads/' + responseJSON.folder_name + '/' + responseJSON.picture_name + '"></a>' +
@@ -228,7 +228,6 @@
 
 
         $(document).on('click', '.remove_media_btn', function (e) {
-
             var media_id = $(this).data("id");
             var li = $(this).closest("li");
 
@@ -257,6 +256,7 @@
                                         delete_confirm.close();
                                         notification(response);
                                     } else {
+                                        $('#product_image_url').val("");
                                         delete_confirm.close();
                                         li.closest('ul').next().closest('.uploader').show('slow');
                                         li.remove();

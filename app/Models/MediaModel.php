@@ -50,13 +50,14 @@ class MediaModel extends Model
             $file->move('uploads/' . $foldername, $file_name);
         }
 
+        if ($ref_id != null) {
+            $product = ProductModel::find($ref_id);
+            $product->product_image_url = url('uploads/' . $foldername . '/' . $file_name);
+            $product->save();
+        }
 
-        $product = ProductModel::find($ref_id);
 
-        $product->product_image_url = url('uploads/' . $foldername.'/'.$file_name);
-        $product->save();
-
-        return array('success' => true, 'picture_name' => $file_name, 'folder_name' => $foldername, 'media_id' => $product->id);
+        return array('success' => true, 'picture_name' => $file_name, 'folder_name' => $foldername, 'media_id' => $ref_id);
     }
 
 
@@ -137,10 +138,12 @@ class MediaModel extends Model
 
     public static function deleteMediabyId($id)
     {
-        $product = ProductModel::find($id);
 
-        $product->product_image_url = "";
-        $product->save();
+        if ($id != null && $id != 'undefined') {
+            $product = ProductModel::find($id);
+            $product->product_image_url = "";
+            $product->save();
+        }
 
         return true;
 
@@ -180,9 +183,8 @@ class MediaModel extends Model
     public static function getMediaOrder($ref_id, $type = NULL)
     {
         $order = MediaSortModel::where('ref_id', $ref_id)->where('media_type', $type)->first();
-        if ($order == null)
-        {
-            $media = MediaModel::where('ref_id', $ref_id)->where('media_type', $type)->orderBy('updated_at','DESC')->first();
+        if ($order == null) {
+            $media = MediaModel::where('ref_id', $ref_id)->where('media_type', $type)->orderBy('updated_at', 'DESC')->first();
         }
         return $order->image_order ?? $media->id ?? '';
     }
@@ -220,9 +222,8 @@ class MediaModel extends Model
     {
 
         $media_order = MediaSortModel::where('ref_id', $ref_id)->where('media_type', $type)->first();
-        if ($media_order == null)
-        {
-            $media = MediaModel::where('ref_id', $ref_id)->where('media_type', $type)->orderBy('updated_at','DESC')->first();
+        if ($media_order == null) {
+            $media = MediaModel::where('ref_id', $ref_id)->where('media_type', $type)->orderBy('updated_at', 'DESC')->first();
         }
 
         $media_order = collect(explode(',', $media_order->image_order ?? $media->id ?? ''));// This is an array of IDs

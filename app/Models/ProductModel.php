@@ -17,7 +17,7 @@ class ProductModel extends Model
 
     public function assigned_user()
     {
-        return $this->hasOne('App\Models\UserModel', 'id', 'assign_user');
+        return $this->hasOne('App\Models\UserModel', 'id', 'assign_user_id');
     }
 
 }

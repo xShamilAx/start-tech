@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         return view('dashboard')
             ->with('users', UserModel::count())
-            ->with('products_unassigned', ProductModel::where('assign_user',"")->get()->count())
-            ->with('products_unassigned_list', ProductModel::where('assign_user',"")->get()->toArray());
+            ->with('products_unassigned', ProductModel::where('assign_user_id',"")->get()->count())
+            ->with('products_unassigned_list', ProductModel::where('assign_user_id',"")->get()->toArray());
     }
 }

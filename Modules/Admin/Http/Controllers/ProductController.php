@@ -44,7 +44,7 @@ class ProductController extends Controller
         if ($userRole[0] == 'Admin')
         $product = ProductModel::with('assigned_user')->get();
         else
-            $product = ProductModel::where('assign_user',$id)->with('assigned_user')->get();
+            $product = ProductModel::where('assign_user_id',$id)->with('assigned_user')->get();
         $edit_product_permission = false;
         if (Auth::user()->can('EDIT_PRODUCT')) {
             $edit_product_permission = true;
@@ -103,8 +103,8 @@ class ProductController extends Controller
         $product->product_description = $product_details['product_description'];
         $product->product_image_url = $product_details['product_image_url'];
 
-        if (Auth::user()->can('ASSIGN_PRODUCT') || isset($product_details['assign_user']))
-        $product->assign_user = $product_details['assign_user'];
+        if (Auth::user()->can('ASSIGN_PRODUCT') || isset($product_details['assign_user_id']))
+        $product->assign_user_id = $product_details['assign_user_id'];
         else
             return response()->json(['status' => 'error', 'msg' => 'You Dont Have Permissions to Assign user']);
         $product->save();

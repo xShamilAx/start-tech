@@ -12,7 +12,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
                         <ul class="right-stats" id="mini-nav-right">
-                            @if (Auth::user()->can(['MANAGE_PRODUCT']))
+                            @if (Auth::user()->can(['ADD_PRODUCT']))
                                 <a href="{{url('admin/product/create')}}" class="btn btn-primary">
                                     <i class="fa fa-plus" aria-hidden="true">
 

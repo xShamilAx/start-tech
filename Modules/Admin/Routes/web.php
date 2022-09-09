@@ -12,8 +12,9 @@
 */
 
 Route::prefix('admin')->group(function() {
-    Route::get('/', 'AdminController@index');
-
+    Route::group(['middleware' => ['auth']], function () {
+        Route::get('/', 'AdminController@index');
+    });
 
     Route::get('/update', function() {
 
